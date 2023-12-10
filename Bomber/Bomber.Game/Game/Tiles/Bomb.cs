@@ -153,14 +153,9 @@ namespace Bomber.Game.Game.Tiles
 
         public TimeSpan ElapsedTime { get; set; }
 
-        public void OnLoaded()
-        {
-            View.UpdatePosition(Position);
-        }
-
         public void OnLoaded(IMovingObjectView view)
         {
-            throw new NotImplementedException();
+            View.UpdatePosition(Position);
         }
     }
 }

@@ -4,9 +4,6 @@ using GameFramework.Impl.Core;
 using GameFramework.UI.Maui.Core;
 using GameFramework.Visuals.Factories;
 using Implementation.Module;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading;
 
 namespace Bomber.Maui
 {
@@ -17,6 +14,8 @@ namespace Bomber.Maui
             InitializeComponent();
 
             MainPage = new AppShell();
+
+            Gameplay.Application2D = Current;
         }
 
         protected override IServiceProvider LoadModules(ServiceCollection collection)

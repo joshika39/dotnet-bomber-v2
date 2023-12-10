@@ -7,7 +7,29 @@
         <viewModels:MainPageViewModel />
     </ContentPage.BindingContext>
     <ScrollView Margin="15">
-        <ContentView Margin="50" Content="{Binding MapControl}" />
+        <StackLayout>
+            <Button Text="Open Map" Command="{Binding OpenMapCommand}"/>
+            <ContentView Margin="50" Content="{Binding MapControl}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <Button Text="Up" Grid.Column="1" Grid.Row="0" Command="{Binding UpButtonCommand}"/>
+                <Button Text="Down" Grid.Column="1" Grid.Row="1" Command="{Binding DownButtonCommand}"/>
+                <Button Text="Left" Grid.Column="0" Grid.Row="1" Command="{Binding LeftButtonCommand}"/>
+                <Button Text="Right" Grid.Column="2" Grid.Row="1" Command="{Binding RightButtonCommand}"/>
+            </Grid>
+            
+            <Button Text="Plant Bomb" Command="{Binding BombButtonCommand}"/>
+            <Button Text="Detonate first bomb" Command="{Binding DetonateBombCommand}"/>
+        </StackLayout>
     </ScrollView>
 
 </ContentPage>

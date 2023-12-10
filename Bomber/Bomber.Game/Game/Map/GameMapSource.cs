@@ -6,8 +6,6 @@ using GameFramework.Impl.Map.Source;
 using GameFramework.Objects.Interactable;
 using GameFramework.Objects.Static;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace Bomber.Game.Game.Map
 {

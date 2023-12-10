@@ -1,20 +1,89 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bomber.Game;
-using Bomber.Game.Game.Map;
 using Bomber.Game.Visuals.Views;
 using Bomber.Maui.Map;
-using GameFramework.UI.Maui.Core;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Devices;
+using Microsoft.Maui.Storage;
 
 namespace Bomber.Maui.ViewModels
 {
-    public class MainPageViewModel
+    public partial class MainPageViewModel
     {
-        public IGameMapView MapControl { get; set; }
+        private Gameplay? _gameplay;
+        public IGameMapView MapControl { get; set; } = new GameMapView();
 
-        public MainPageViewModel()
+        [RelayCommand]
+        private async Task OnOpenMap()
         {
-            var mapControl = new GameMapView();
-            var gameplay = new Gameplay();
-            MapControl = mapControl;
+            _gameplay = new Gameplay();
+            
+            var customFileTypes = new Dictionary<DevicePlatform, IEnumerable<string>>()
+            {
+                { DevicePlatform.Android, new[] { ".bob" } },
+                { DevicePlatform.iOS, new[] { ".bob" } },
+                { DevicePlatform.macOS, new[] { ".bob"  } },
+                { DevicePlatform.WinUI, new[] { ".bob" } },
+                { DevicePlatform.Unknown, new[] {".bob"  } },
+            };
+            var fileTypes = new FilePickerFileType(customFileTypes);
+            
+            var options = new PickOptions
+            {
+                PickerTitle = "Select a map",
+                FileTypes = fileTypes
+            };
+            
+            var result = await FilePicker.Default.PickAsync(options);
+            if (result is null)
+            {
+                return;
+            }
+            
+            _gameplay.OpenMap(result.FullPath, MapControl);
+        }
+
+        [RelayCommand]
+        private void OnLeftButton()
+        {
+            _gameplay?.HandleKeyPress('a');
+        }
+        
+        [RelayCommand]
+        private void OnRightButton()
+        {
+            _gameplay?.HandleKeyPress('d');
+        }
+        
+        [RelayCommand]
+        private void OnUpButton()
+        {
+            _gameplay?.HandleKeyPress('w');
+        }
+        
+        [RelayCommand]
+        private void OnDownButton()
+        {
+            _gameplay?.HandleKeyPress('s');
+        }
+        
+        [RelayCommand]
+        private void OnBombButton()
+        {
+            _gameplay?.HandleKeyPress('b');
+        }
+
+        [RelayCommand]
+        private void OnDetonateBomb()
+        {
+            _gameplay?.HandleKeyPress('1');
+        }
+        
+        [RelayCommand]
+        private void OnPauseButton()
+        {
+            
         }
     }
 }

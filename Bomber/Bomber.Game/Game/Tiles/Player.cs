@@ -16,11 +16,11 @@ using Infrastructure.Application;
 
 namespace Bomber.Game.Game.Tiles
 {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     public sealed class Player : IInteractableObject2D, IViewLoadedSubscriber, IBombWatcher
     {
         private readonly IGameManager _gameManager;
         private readonly ILifeCycleManager _lifeCycleManager;
-        private readonly IBoardService _boardService;
         private bool _isAlive = true;
         private bool _disposed;
 
@@ -43,7 +43,6 @@ namespace Bomber.Game.Game.Tiles
             View = Gameplay.Application2D.BoardService.TileViewFactory2D.CreateInteractableTileView2D(position, Color.Aqua);
             _gameManager = Gameplay.Application2D.Manager;
             _lifeCycleManager = lifeCycleManager ?? throw new ArgumentNullException(nameof(lifeCycleManager));
-            _boardService = Gameplay.Application2D.BoardService;
             Position = position ?? throw new ArgumentNullException(nameof(position));
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Email = email ?? throw new ArgumentNullException(nameof(email));
@@ -89,7 +88,7 @@ namespace Bomber.Game.Game.Tiles
             }
 
             var bomb = PlantedBombs.ElementAt(bombIndex);
-            Task.Run(async () => await bomb.Detonate());
+            bomb.Detonate();
             PlantedBombs.Remove(bomb);
         }
 
@@ -149,4 +148,6 @@ namespace Bomber.Game.Game.Tiles
             View.UpdatePosition(Position);
         }
     }
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
 }

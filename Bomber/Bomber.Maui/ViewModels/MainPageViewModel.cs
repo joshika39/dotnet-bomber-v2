@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bomber.Game;
 using Bomber.Game.Visuals.Views;
 using Bomber.Maui.Map;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Devices;
+using Microsoft.Maui.Storage;
 
 #nullable enable
 

@@ -6,6 +6,5 @@ namespace Bomber.Game.Visuals.Views
     {
         void PlantBomb(IMovingObjectView bombView);
         void DeleteBomb(IMovingObjectView bombView);
-        void Clear();
     }
 }

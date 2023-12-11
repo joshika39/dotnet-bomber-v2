@@ -1,9 +1,6 @@
 using Bomber.Game;
 using Bomber.WPF.Map;
 using CommunityToolkit.Mvvm.Input;
-using GameFramework.GameFeedback;
-using GameFramework.Impl.GameFeedback;
-using GameFramework.UI.WPF.Core;
 using Microsoft.Win32;
 using System;
 using System.IO;

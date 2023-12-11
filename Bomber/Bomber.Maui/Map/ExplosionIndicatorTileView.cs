@@ -1,7 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using Bomber.Game.Visuals.Views;
 using GameFramework.Configuration;
 using GameFramework.Core.Position;
 using GameFramework.UI.Maui.Tiles.Static;
+using Microsoft.Maui.Controls;
 using Color = System.Drawing.Color;
 
 namespace Bomber.Maui.Map;

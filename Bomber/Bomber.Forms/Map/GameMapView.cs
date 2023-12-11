@@ -16,10 +16,5 @@ namespace Bomber.Forms.Map
         {
             throw new NotImplementedException();
         }
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

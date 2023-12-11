@@ -1,4 +1,6 @@
-﻿using Bomber.Game;
+﻿using System;
+using System.Threading;
+using Bomber.Game;
 using Bomber.Game.Factories;
 using Bomber.Game.Visuals.Feedback;
 using Bomber.Maui.Factories;
@@ -7,6 +9,7 @@ using GameFramework.Impl.Core;
 using GameFramework.UI.Maui.Core;
 using GameFramework.Visuals.Factories;
 using Implementation.Module;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bomber.Maui
 {

@@ -15,10 +15,5 @@ namespace Bomber.WPF.Map
         {
 
         }
-
-        public void Clear()
-        {
-            Children.Clear();
-        }
     }
 }

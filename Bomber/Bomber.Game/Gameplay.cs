@@ -4,16 +4,13 @@ using GameFramework.Core.Motion;
 using GameFramework.GameFeedback;
 using GameFramework.Impl.GameFeedback;
 using GameFramework.Manager;
-using GameFramework.Objects.Interactable;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using System.Drawing;
-using Bomber.Game.Factories;
 using Bomber.Game.Game.Map;
 using Bomber.Game.Game.Tiles;
 using Bomber.Game.Visuals.Views;
 using GameFramework.Manager.State;
-using GameFramework.Visuals.Views;
 using Infrastructure.Application;
 using Player = Bomber.Game.Game.Tiles.Player;
 
@@ -27,6 +24,8 @@ namespace Bomber.Game
             get => _application2D;
             set => _application2D ??= value;
         }
+
+        private bool _hadEnemies;
 
         public void OpenMap(string mapFileName, IGameMapView mapView2D)
         {
@@ -45,6 +44,7 @@ namespace Bomber.Game
             var mapSource = new GameMapSource(Application2D.Services, mapFileName);
             var map = new GameMap(mapSource, mapView2D, positionFactory, Application2D.ConfigurationService);
 
+            _hadEnemies = mapSource.Enemies.Any();
 
             if (Application2D.Manager.State == GameState.InProgress)
             {
@@ -99,14 +99,15 @@ namespace Bomber.Game
 
             var affectedObjects = map.MapPortion(bomb.Position, bomb.Radius);
             var entities = map.GetInteractablesAtPortion(affectedObjects);
+            
             foreach (var entity in entities)
             {
-                if (entity is Bomb)
+                if (entity != bomb)
                 {
-                    continue;
+                    entity.Delete();
+                    map.Interactables.Remove(entity);
                 }
 
-                map.Interactables.Remove(entity);
                 switch (entity)
                 {
                     case Enemy:
@@ -116,17 +117,19 @@ namespace Bomber.Game
                         Application2D.Manager.EndGame(new GameplayFeedback(FeedbackLevel.Info, "You lost! You got exploded!"), GameResolution.Loss);
                         break;
                 }
-
-                entity.Delete();
             }
-
+            
+            bomb.Delete();
             map.Interactables.Remove(bomb);
-            bomb.Dispose();
-            if (!map.Interactables.Any(entity => entity is Enemy))
+
+            
+            if (!_hadEnemies || map.Interactables.Any(entity => entity is Enemy))
             {
-                Application2D.Manager.EndGame(new GameplayFeedback(FeedbackLevel.Info, $"You won! The game lasted: {Application2D.Manager.Timer.Elapsed:g}"), GameResolution.Win);
-                Application2D.Manager.Timer.Reset();
+                return;
             }
+            
+            Application2D.Manager.EndGame(new GameplayFeedback(FeedbackLevel.Info, $"You won! The game lasted: {Application2D.Manager.Timer.Elapsed:g}"), GameResolution.Win);
+            Application2D.Manager.Timer.Reset();
         }
 
         public void HandleKeyPress(char keyChar)

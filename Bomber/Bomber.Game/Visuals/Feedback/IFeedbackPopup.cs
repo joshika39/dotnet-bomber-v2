@@ -7,6 +7,6 @@ namespace Bomber.Game.Visuals.Feedback
         void DisplayError(string message, string title);
         void DisplaySuccess(string message, string title);
         void DisplayWarning(string message, string title);
-        void DisplayInfo(string message, string title);
+        Task DisplayInfo(string message, string title);
     }
 }

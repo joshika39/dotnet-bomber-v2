@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using Bomber.Game.Visuals.Views;
 using GameFramework.Board;
@@ -94,6 +95,7 @@ namespace Bomber.Game.Game.Tiles
 
             var bomb = PlantedBombs.ElementAt(bombIndex);
             bomb.Detonate();
+            PlantedBombs.Remove(bomb);
         }
 
         public Bomb PutBomb()
@@ -144,7 +146,7 @@ namespace Bomber.Game.Game.Tiles
 
         public void BombExploded(Bomb bomb)
         {
-            PlantedBombs.Remove(bomb);
+            Debug.WriteLine($"Bomb exploded at {bomb.Position}");
         }
 
         public void OnLoaded(IMovingObjectView view)

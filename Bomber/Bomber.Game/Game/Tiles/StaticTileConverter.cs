@@ -5,6 +5,7 @@ using GameFramework.Objects.Static;
 using GameFramework.Tiles.Factories;
 using GameFramework.Visuals.Factories;
 using System.Drawing;
+using Bomber.Game.Factories;
 
 namespace Bomber.Game.Game.Tiles
 {
@@ -13,14 +14,16 @@ namespace Bomber.Game.Game.Tiles
         private readonly ITileFactory2D _tileFactory2D;
         private readonly ITileViewFactory2D _tileViewFactory2D;
         private readonly IConfigurationService2D _configurationService2D;
+        private readonly ITileFactory _tileFactory;
 
         public StaticTileConverter(ITileFactory2D tileFactory2D, ITileViewFactory2D tileViewFactory2D,
-            IConfigurationService2D configurationService2D)
+            IConfigurationService2D configurationService2D, ITileFactory tileFactory)
         {
             _tileFactory2D = tileFactory2D ?? throw new ArgumentNullException(nameof(tileFactory2D));
             _tileViewFactory2D = tileViewFactory2D ?? throw new ArgumentNullException(nameof(tileViewFactory2D));
             _configurationService2D =
                 configurationService2D ?? throw new ArgumentNullException(nameof(configurationService2D));
+            _tileFactory = tileFactory ?? throw new ArgumentNullException(nameof(tileFactory));
         }
 
         public IStaticObject2D FromEnum<T>(T tileType, IPosition2D position) where T : Enum
@@ -32,7 +35,8 @@ namespace Bomber.Game.Game.Tiles
 
             return tileType switch
             {
-                TileTypes.GroundTile => _tileFactory2D.CreateStaticTile2D(position, Color.Green),
+                TileTypes.GroundTile => new GeneralStaticTile(position, _configurationService2D, 
+                    _tileFactory.CreateGround(position)),
                 TileTypes.WallTile => new GeneralStaticTile(position, _configurationService2D,
                     _tileViewFactory2D.CreateTileView2D(position, Color.Gray), true),
                 TileTypes.HoleTile => _tileFactory2D.CreateStaticTile2D(position, Color.Black),

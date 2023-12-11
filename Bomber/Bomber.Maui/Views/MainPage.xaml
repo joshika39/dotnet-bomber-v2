@@ -8,6 +8,7 @@
     </ContentPage.BindingContext>
     <ScrollView Margin="15">
         <StackLayout>
+            <Button Text="Save Map" Command="{Binding SaveMapCommand}"/>
             <Button Text="Open Map" Command="{Binding OpenMapCommand}"/>
             <ContentView Margin="50" Content="{Binding MapControl}" />
             <Grid>

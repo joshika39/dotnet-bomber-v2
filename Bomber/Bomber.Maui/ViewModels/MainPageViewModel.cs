@@ -45,6 +45,12 @@ namespace Bomber.Maui.ViewModels
         }
 
         [RelayCommand]
+        private void OnSaveMap()
+        {
+            _gameplay?.SaveGame();
+        }
+
+        [RelayCommand]
         private void OnLeftButton()
         {
             _gameplay?.HandleKeyPress('a');

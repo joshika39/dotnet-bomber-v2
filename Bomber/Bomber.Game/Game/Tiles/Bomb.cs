@@ -74,7 +74,7 @@ namespace Bomber.Game.Game.Tiles
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            Dispose();
         }
         public void SteppedOn(IInteractableObject2D interactableObject2D)
         {
@@ -144,7 +144,7 @@ namespace Bomber.Game.Game.Tiles
         {
             foreach (var affectedObject in _affectedObjects)
             {
-                if (affectedObject is IBomberMapTileView bombMapObject)
+                if (affectedObject.View is IBomberMapTileView bombMapObject)
                 {
                     bombMapObject.IndicateBomb(RemainingTime / 1000d);
                 }

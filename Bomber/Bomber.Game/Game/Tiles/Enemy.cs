@@ -77,7 +77,7 @@ namespace Bomber.Game.Game.Tiles
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            Dispose();
         }
 
         private static Move2D GetRandomMove()

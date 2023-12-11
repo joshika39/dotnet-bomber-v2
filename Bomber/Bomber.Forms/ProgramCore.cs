@@ -1,6 +1,7 @@
 using Bomber.Forms.Factories;
 using Bomber.Forms.Views.Main;
 using Bomber.Game;
+using Bomber.Game.Factories;
 using GameFramework.Impl.Core;
 using GameFramework.UI.Forms.Core;
 using GameFramework.Visuals.Factories;
@@ -25,6 +26,7 @@ namespace Bomber.Forms
 
             // NOTE: Register your services here
             collection.AddScoped<IMapViewFactory2D, FormsGameMapFactory>();
+            collection.AddScoped<ITileFactory, FormsTileFactory>();
             collection.AddScoped<IMainWindowPresenter, MainWindowPresenter>();
             collection.AddSingleton<IMainWindow>(p =>
             {

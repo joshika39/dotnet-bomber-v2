@@ -76,11 +76,6 @@ namespace Bomber.Game.Game.Tiles
             View.UpdatePosition(Position);
         }
 
-        public Bomb PutBomb(IDisposableStaticObjectView bombView, IBombWatcher bombWatcher)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DetonateBombAt(int bombIndex)
         {
             if (!PlantedBombs.Any())
@@ -94,7 +89,7 @@ namespace Bomber.Game.Game.Tiles
             }
 
             var bomb = PlantedBombs.ElementAt(bombIndex);
-            bomb.Detonate();
+            Task.Run(async () => await bomb.Detonate());
             PlantedBombs.Remove(bomb);
         }
 
@@ -108,7 +103,7 @@ namespace Bomber.Game.Game.Tiles
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            Dispose();
         }
 
         private void Dispose(bool disposing)
@@ -137,7 +132,7 @@ namespace Bomber.Game.Game.Tiles
             Dispose(true);
         }
 
-        public void Kill()
+        private void Kill()
         {
             _isAlive = false;
             _gameManager.EndGame(new GameplayFeedback(FeedbackLevel.Info, "You lost because you're DEAD!"), GameResolution.Loss);

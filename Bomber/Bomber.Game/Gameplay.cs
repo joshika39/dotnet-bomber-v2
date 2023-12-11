@@ -237,14 +237,8 @@ namespace Bomber.Game
 
         public void OnGameReset()
         {
-            if (Application2D is null)
-            {
-                return;
-            }
-
-            var map = Application2D.BoardService.GetActiveMap<GameMap>();
-
-            if (map is null || map is null)
+            var map = Application2D?.BoardService.GetActiveMap<GameMap>();
+            if (map is null)
             {
                 return;
             }

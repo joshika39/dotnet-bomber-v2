@@ -1,0 +1,31 @@
+{
+  "player": {
+    "x": 11,
+    "y": 1
+  },
+  "description": "This is an example",
+  "name": "WorkingDemo",
+  "row": 6,
+  "col": 14,
+  "data": "MCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwDQowIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDANCjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMA0KMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwDQowIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDANCjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMA0K",
+  "enemies": [
+    {
+      "X": 0,
+      "Y": 4
+    }
+  ],
+  "bombs": [
+    {
+      "X": 5,
+      "Y": 3,
+      "RemainingTime": 2000,
+      "Radius": 3
+    },
+    {
+      "X": 7,
+      "Y": 1,
+      "RemainingTime": 2000,
+      "Radius": 3
+    }
+  ]
+}

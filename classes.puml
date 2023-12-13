@@ -1,0 +1,64 @@
+@startuml
+
+namespace Game {
+
+class Gameplay {}
+
+}
+
+namespace Game.Dummies {
+
+class DummyBomb {}
+class DummyEntity {}
+
+}
+
+namespace Game.Map {
+
+class GameMap {
+}
+
+class GameMapSource {
+}
+
+}
+
+namespace Game.Tiles {
+
+class Bomb {}
+class Player {}
+class Enemy {}
+class StaticTileController {}
+enum TileTypes {}
+
+}
+
+namespace Game.Visuals {
+
+interface IGameView {}
+interface IBombWatcher {}
+interface IBomberMapTileView {}
+
+}
+
+namespace Maui.Map {
+
+class GameMapView implements Game.Visuals.IGameView {}
+class ExplosionIndicatorTileView implements Game.Visuals.IBomberMapTileView {}
+
+}
+
+namespace Maui.Views {
+
+class MainPage {}
+
+}
+
+namespace Maui.ViewModels {
+
+class MainPageViewModel {}
+
+}
+
+
+@enduml

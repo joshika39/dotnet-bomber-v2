@@ -1,8 +1,8 @@
 using Bomber.Game.Game.Tiles;
 using Bomber.Game.Visuals.Views;
 using GameFramework.Configuration;
-using GameFramework.Core.Factories;
 using GameFramework.Core.Position;
+using GameFramework.Core.Position.Factories;
 using GameFramework.Impl.Map;
 using Infrastructure.Application;
 using Microsoft.Extensions.DependencyInjection;

@@ -5,46 +5,36 @@ using GameFramework.Core.Motion;
 using GameFramework.Core.Position;
 using GameFramework.GameFeedback;
 using GameFramework.Impl.GameFeedback;
+using GameFramework.Impl.Tiles.Interactable;
 using GameFramework.Manager;
 using GameFramework.Objects;
 using GameFramework.Objects.Interactable;
 using GameFramework.Tiles;
 using GameFramework.Visuals.Tiles;
-using GameFramework.Visuals.Views;
 using Infrastructure.Application;
 using Infrastructure.Time.Listeners;
 
 namespace Bomber.Game.Game.Tiles
 {
-    public sealed class Enemy : IInteractableObject2D, ITickListener, IViewLoadedSubscriber
+    public sealed class Enemy : InteractableTile, ITickListener, IViewLoadedSubscriber
     {
-        public Guid Id { get; } = Guid.NewGuid();
-        public IMovingObjectView View { get; }
-
         private readonly CancellationToken _stoppingToken;
         private Move2D _direction;
         private bool _disposed;
         private readonly IBoardService _service;
         private readonly IGameManager _gameManager;
-
-        public IPosition2D Position { get; private set; }
-        public IScreenSpacePosition ScreenSpacePosition { get; }
-        public bool IsObstacle => false;
-
-        public Enemy(IPosition2D position, ILifeCycleManager lifeCycleManager)
+        
+        public Enemy(IPosition2D position, ILifeCycleManager lifeCycleManager) : base(position, Gameplay.Application2D!.BoardService, Color.Red)
         {
             if (Gameplay.Application2D is null)
             {
                 throw new InvalidOperationException("ApplicationID must be set!");
             }
-            View = Gameplay.Application2D.BoardService.TileViewFactory2D.CreateInteractableTileView2D(position, Color.DarkRed);
             _service = Gameplay.Application2D.BoardService;
             _gameManager = Gameplay.Application2D.Manager;
             Position = position ?? throw new ArgumentNullException(nameof(position));
             _stoppingToken = lifeCycleManager.Token;
             _direction = GetRandomMove();
-            View.Attach(this);
-            ScreenSpacePosition = View.ScreenSpacePosition;
         }
 
         public async Task ExecuteAsync()
@@ -57,22 +47,25 @@ namespace Bomber.Game.Game.Tiles
             }
         }
 
-        public void SteppedOn(IInteractableObject2D interactable)
+        public override void SteppedOn(IInteractableObject2D interactable)
         {
+            base.SteppedOn(interactable);
+            
             if (interactable is Player)
             {
                 _gameManager.EndGame(new GameplayFeedback(FeedbackLevel.Info, "You died!"), GameResolution.Loss);
             }
         }
 
-        public void Step(IObject2D staticObject)
+        public override void Step(IObject2D staticObject)
         {
             if (staticObject is IDeadlyTile || staticObject.IsObstacle)
             {
                 _direction = GetRandomMove();
             }
+            
             Position = staticObject.Position;
-            View.UpdatePosition(Position);
+            View.Position2D = Position;
         }
 
         public void Delete()
@@ -131,10 +124,5 @@ namespace Bomber.Game.Game.Tiles
         }
 
         public TimeSpan ElapsedTime { get; set; }
-
-        public void OnLoaded(IMovingObjectView view)
-        {
-            View.UpdatePosition(Position);
-        }
     }
 }

@@ -5,6 +5,6 @@ namespace Bomber.Game.Factories
 {
     public interface ITileFactory
     {
-        IBomberMapTileView CreateGround(IPosition2D position);
+        IBomberMapTile CreateGround(IPosition2D position);
     }
 }

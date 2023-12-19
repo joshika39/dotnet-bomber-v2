@@ -41,7 +41,6 @@ namespace Bomber.Maui
             // NOTE: Add your own services here
             return collection
                 .AddScoped<IMapViewFactory2D, MauiGameMapViewFactory>()
-                .AddScoped<ITileFactory, MauiTileFactory>()
                 .AddScoped<IFeedbackPopup, MauiPopupService>()
                 .BuildServiceProvider();
         }

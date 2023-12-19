@@ -26,7 +26,6 @@ namespace Bomber.Forms
 
             // NOTE: Register your services here
             collection.AddScoped<IMapViewFactory2D, FormsGameMapFactory>();
-            collection.AddScoped<ITileFactory, FormsTileFactory>();
             collection.AddScoped<IMainWindowPresenter, MainWindowPresenter>();
             collection.AddSingleton<IMainWindow>(p =>
             {

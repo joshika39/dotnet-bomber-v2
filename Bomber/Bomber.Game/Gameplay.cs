@@ -1,5 +1,4 @@
 using GameFramework.Application;
-using GameFramework.Core.Factories;
 using GameFramework.Core.Motion;
 using GameFramework.GameFeedback;
 using GameFramework.Impl.GameFeedback;
@@ -10,6 +9,7 @@ using System.Drawing;
 using Bomber.Game.Game.Map;
 using Bomber.Game.Game.Tiles;
 using Bomber.Game.Visuals.Views;
+using GameFramework.Core.Position.Factories;
 using GameFramework.Manager.State;
 using Infrastructure.Application;
 using Player = Bomber.Game.Game.Tiles.Player;
@@ -41,7 +41,7 @@ namespace Bomber.Game
 
             Application2D.Manager.EndGame(new GameplayFeedback(FeedbackLevel.Info, "Game ended"), GameResolution.Nothing);
 
-            var mapSource = new GameMapSource(Application2D.Services, mapFileName);
+            var mapSource = new GameMapSource(mapFileName, Application2D.Services);
             var map = new GameMap(mapSource, mapView2D, positionFactory, Application2D.ConfigurationService);
 
             _hadEnemies = mapSource.Enemies.Any();
@@ -50,9 +50,7 @@ namespace Bomber.Game
             {
                 Application2D.Manager.ResetGame();
             }
-            var view = Application2D.BoardService.TileViewFactory2D.CreateInteractableTileView2D(positionFactory.CreatePosition(0, 0), Color.Aqua);
-            var player = new Player(mapSource.PlayerPosition, "Bomber", "Test@test.com", lifeCycleManager);
-            view.ViewLoaded();
+            var player = new Player(mapSource.PlayerPosition, "Bomber", "Test@test.com", lifeCycleManager, Application2D.BoardService);
             map.Interactables.Add(player);
             Application2D.Manager.StartGame(new GameplayFeedback(FeedbackLevel.Info, "Game started!"));
             Application2D.BoardService.SetActiveMap(map);
@@ -70,7 +68,7 @@ namespace Bomber.Game
 
             foreach (var bombDummy in map.MapSource.Bombs)
             {
-                var bomb = new Bomb(positionFactory.CreatePosition(bombDummy.X, bombDummy.Y), 3, lifeCycleManager, bombDummy.RemainingTime);
+                var bomb = new Bomb(positionFactory.CreatePosition(bombDummy.X, bombDummy.Y), 3, lifeCycleManager, Application2D.BoardService, bombDummy.RemainingTime);
                 player.PlantedBombs.Add(bomb);
                 bomb.Attach(this);
                 bomb.Attach(player);

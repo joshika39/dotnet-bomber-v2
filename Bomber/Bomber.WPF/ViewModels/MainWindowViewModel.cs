@@ -8,20 +8,21 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Input;
 using Bomber.Game.Visuals.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Bomber.WPF.ViewModels
 {
-    public partial class MainWindowViewModel : IMainWindowViewModel
+    public partial class MainWindowViewModel : ObservableObject, IMainWindowViewModel
     {
         private readonly Gameplay _gamePlay;
-        private string _currentTime = "asdasd";
 
         public IGameMapView MapView { get; }
 
+        private string _currentTime = "Not started yet";
         public string CurrentTime
         {
             get => _currentTime;
-            // private set => SetProperty(ref _currentTime, value);
+            private set => SetProperty(ref _currentTime, value);
         }
 
         public MainWindowViewModel()

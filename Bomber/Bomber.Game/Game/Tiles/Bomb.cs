@@ -1,20 +1,19 @@
 using Bomber.Game.Game.Map;
 using Bomber.Game.Visuals.Views;
-using GameFramework.Board;
 using GameFramework.Core.Position;
 using GameFramework.Manager;
 using GameFramework.Objects;
-using GameFramework.Objects.Interactable;
 using GameFramework.Objects.Static;
 using GameFramework.Visuals.Tiles;
-using GameFramework.Visuals.Views;
 using Infrastructure.Application;
 using Infrastructure.Time.Listeners;
 using System.Drawing;
+using GameFramework.Board;
+using GameFramework.Impl.Tiles.Interactable;
 
 namespace Bomber.Game.Game.Tiles
 {
-    public sealed class Bomb : IInteractableObject2D, ITickListener, IViewLoadedSubscriber
+    public sealed class Bomb : InteractableTile, ITickListener, IViewLoadedSubscriber
     {
         private readonly ICollection<IBombWatcher> _bombWatchers = new List<IBombWatcher>();
         private readonly IGameManager _gameManager;
@@ -22,27 +21,21 @@ namespace Bomber.Game.Game.Tiles
         private bool _disposed;
         private readonly CancellationToken _stoppingToken;
 
-        public Guid Id { get; } = Guid.NewGuid();
-        public IMovingObjectView View { get; }
-        public IPosition2D Position { get; }
         public IScreenSpacePosition ScreenSpacePosition { get; }
-        public bool IsObstacle => false;
         public int Radius { get; }
         public int RemainingTime { get; private set; }
         private bool _isDetonated;
 
 
-        public Bomb(IPosition2D position, int radius, ILifeCycleManager lifeCycleManager, int timeToExplosion = 2000)
+        public Bomb(IPosition2D position, int radius, ILifeCycleManager lifeCycleManager, IBoardService boardService, int timeToExplosion = 2000) : base(position, boardService, Color.Black)
         {
             RemainingTime = timeToExplosion;
             if (Gameplay.Application2D is null)
             {
                 throw new InvalidOperationException("ApplicationID must be set!");
             }
-            View = Gameplay.Application2D.BoardService.TileViewFactory2D.CreateInteractableTileView2D(position, Color.Black);
             _gameManager = Gameplay.Application2D.Manager;
             var boardService1 = Gameplay.Application2D.BoardService;
-            Position = position ?? throw new ArgumentNullException(nameof(position));
             lifeCycleManager = lifeCycleManager ?? throw new ArgumentNullException(nameof(lifeCycleManager));
             _stoppingToken = lifeCycleManager.Token;
             if (radius <= 0)
@@ -64,21 +57,6 @@ namespace Bomber.Game.Game.Tiles
             {
                 _affectedObjects = map.MapPortion(position, radius);
             }
-            View.Attach(this);
-        }
-
-        public void Step(IObject2D staticObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete()
-        {
-            Dispose();
-        }
-        public void SteppedOn(IInteractableObject2D interactableObject2D)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task Detonate()
@@ -144,7 +122,7 @@ namespace Bomber.Game.Game.Tiles
         {
             foreach (var affectedObject in _affectedObjects)
             {
-                if (affectedObject.View is IBomberMapTileView bombMapObject)
+                if (affectedObject.View is IBomberMapTile bombMapObject)
                 {
                     bombMapObject.IndicateBomb(RemainingTime / 1000d);
                 }
@@ -152,10 +130,5 @@ namespace Bomber.Game.Game.Tiles
         }
 
         public TimeSpan ElapsedTime { get; set; }
-
-        public void OnLoaded(IMovingObjectView view)
-        {
-            View.UpdatePosition(Position);
-        }
     }
 }
